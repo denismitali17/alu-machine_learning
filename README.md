@@ -1,57 +1,19 @@
-##  Plotting with Python
+#  Machine Learning Repository
 
-###  Project Goals
-
-By the end of this project, you should be able to confidently describe — without searching online — the following key concepts:
+Welcome to the **Machine Learning** project repository! This collection contains foundational and intermediate-level implementations of machine learning concepts and algorithms using Python.
 
 ---
 
-###  Key Concepts to Understand
+##  Overview
 
-#### 🔹 Plots & Graphs
+This repository is structured to help you understand and practice core topics in machine learning, ranging from basic math to model building and evaluation.
 
-* What does the term *plot* mean in data visualization?
-* Understand the differences and use-cases for:
 
-  * **Scatter plots**
-  * **Line graphs**
-  * **Bar charts**
-  * **Histograms**
 
-#### 🔹 Introduction to `matplotlib`
+##  Getting Started
 
-* What is `matplotlib` and why is it widely used in data science?
-
-#### 🔹 Visualization Skills
-
-* How to generate different types of graphs using `matplotlib`
-* Techniques for:
-
-  * Labeling your axes and title
-  * Customizing scales on the X and Y axes
-  * Displaying multiple data series on one graph
-
----
-
-###  Getting Started: Installing `matplotlib` 3.0
-
-To follow along with the project, make sure to install the required libraries:
+To get started, clone this repository:
 
 ```bash
-pip install --user matplotlib==3.0
-pip install --user Pillow
-```
-
-For some systems (especially Linux), you might also need:
-
-```bash
-sudo apt-get install python3-tk
-```
-
-This ensures `matplotlib` works correctly with graphical interfaces.
-
----
-
-###  Next Steps
-
-Once everything is installed, you can start exploring how visualizing data helps in understanding trends, distributions, and comparisons with ease using Python.
+git clone https://github.com/denismitali17/alu-machine_learning.git
+cd alu-machine_learning
