@@ -1,15 +1,15 @@
 #!/usr/bin/env python3
 '''
-    A function def np_cat(mat1, mat2, axis=0)
-    that concatenates two matrices along a specific axis:
+    A function def np_matmul(mat1, mat2):
+    that performs matrix multiplication
 '''
 
 
 import numpy as np
 
 
-def np_cat(mat1, mat2, axis=0):
+def np_matmul(mat1, mat2):
     '''
-        Concatenate two arrays based on an axis
+        Multiply two Matrices
     '''
-    return np.concatenate((mat1, mat2), axis=axis)
+    return np.matmul(mat1, mat2)
