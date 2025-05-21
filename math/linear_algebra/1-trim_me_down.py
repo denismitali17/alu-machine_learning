@@ -4,3 +4,4 @@ the_middle = []
 for i in range(len(matrix)):
     the_middle.append(matrix[i][2:4])
 print("The middle columns of the matrix are: {}".format(the_middle))
+ 
