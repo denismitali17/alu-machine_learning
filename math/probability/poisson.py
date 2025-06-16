@@ -3,8 +3,6 @@
     Poisson distribution
     that represents a poisson distribution
 '''
-
-
 class Poisson:
     '''
         Class Poisson that represents a
@@ -59,5 +57,4 @@ class Poisson:
         cdf = 0
         for i in range(k + 1):
             cdf += self.pmf(i)
-        return cdf   
-    
+        return cdf      
