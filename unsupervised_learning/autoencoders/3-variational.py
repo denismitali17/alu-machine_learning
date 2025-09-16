@@ -19,7 +19,6 @@ def autoencoder(input_dims, hidden_layers, latent_dims):
         encoder, decoder, auto
     """
 
-    # ----- Encoder -----
     X_input = keras.Input(shape=(input_dims,))
     Y_prev = keras.layers.Dense(
         units=hidden_layers[0], activation='relu'
@@ -40,7 +39,6 @@ def autoencoder(input_dims, hidden_layers, latent_dims):
         epsilon = keras.backend.random_normal(shape=(batch, dim))
         return z_m + keras.backend.exp(0.5 * z_log_var) * epsilon
 
-    # Separate variable for Lambda input to satisfy pycodestyle
     lambda_input = [z_mean, z_log_sigma]
 
     z = keras.layers.Lambda(
@@ -52,7 +50,6 @@ def autoencoder(input_dims, hidden_layers, latent_dims):
 
     encoder = keras.Model(X_input, [z, z_mean, z_log_sigma])
 
-    # ----- Decoder -----
     X_decode = keras.Input(shape=(latent_dims,))
     Y_prev = keras.layers.Dense(
         units=hidden_layers[-1], activation='relu'
@@ -64,19 +61,15 @@ def autoencoder(input_dims, hidden_layers, latent_dims):
     output = keras.layers.Dense(units=input_dims, activation='sigmoid')(Y_prev)
     decoder = keras.Model(X_decode, output)
 
-    # ----- Autoencoder -----
     z_sample = encoder(X_input)[0]
     d_output = decoder(z_sample)
     auto = keras.Model(X_input, d_output)
 
-    # ----- Loss Function -----
     def vae_loss(x, x_decoder_mean):
-        # Reconstruction loss
         x_loss = keras.backend.sum(
             keras.backend.binary_crossentropy(x, x_decoder_mean),
             axis=1
         )
-        # KL divergence loss
         kl_loss = -0.5 * keras.backend.sum(
             1 + z_log_sigma - keras.backend.square(z_mean)
             - keras.backend.exp(z_log_sigma),
