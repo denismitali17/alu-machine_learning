@@ -40,12 +40,15 @@ def autoencoder(input_dims, hidden_layers, latent_dims):
         epsilon = keras.backend.random_normal(shape=(batch, dim))
         return z_m + keras.backend.exp(0.5 * z_log_var) * epsilon
 
-    # Use a separate variable for Lambda arguments to satisfy PEP 8
-    lambda_args = [z_mean, z_log_sigma]
+    # Separate variable for Lambda input to satisfy pycodestyle
+    lambda_input = [z_mean, z_log_sigma]
+
     z = keras.layers.Lambda(
         function=sampling,
         output_shape=(latent_dims,)
-    )(lambda_args)
+    )(
+        lambda_input
+    )
 
     encoder = keras.Model(X_input, [z, z_mean, z_log_sigma])
 
