@@ -1,65 +1,42 @@
 #!/usr/bin/env python3
-
-
-"""Print the location for a GitHub user from the API URL passed as
-the first argument.
-
-Usage:
-    ./2-user_location.py https://api.github.com/users/holbertonschool
-
-If the user doesn't exist print: Not found
-If the status code is 403 print: Reset in X min
+"""
+    script that prints the location of a specific user:
 """
 
-import sys
-import time
-import math
+
 import requests
+import time
+from datetime import datetime
 
 
-def print_user_location(url):
-    """Request the GitHub user URL and print location or error messages.
-
-    Args:
-        url (str): Full API URL for the user, e.g. https://api.github.com/users/xxx
+def main(url):
     """
-    try:
-        res = requests.get(url)
-    except requests.RequestException:
-        # Network error, don't crash; behave silently (tests don't expect output)
-        return
+    - The user is passed as first argument of the script
+    with the full API URL, example: ./2-user_location.py
+    https://api.github.com/users/holbertonschool
+    - If the user doesn’t exist, print Not found
+    - If the status code is 403, print Reset in X min where X
+    is the number of minutes from now and the value of
+    X-Ratelimit-Reset
+    - Your code should not be executed when the file is
+    imported (you should use if __name__ == '__main__':)
 
-    if res.status_code == 403:
-        # header names are case-insensitive, check common variants
-        reset = res.headers.get('X-RateLimit-Reset') or res.headers.get(
-            'X-Ratelimit-Reset')
-        try:
-            reset = int(reset)
-            # compute remaining minutes, round up to avoid reporting one minute less
-            diff = math.ceil((reset - time.time()) / 60)
-            if diff < 0:
-                diff = 0
-        except Exception:
-            diff = 0
+    """
+    response = requests.get(url)
 
-        print("Reset in {} min".format(diff))
-
-    elif res.status_code == 404:
+    if response.status_code == 404:
         print("Not found")
-
-    elif res.status_code == 200:
-        try:
-            data = res.json()
-        except ValueError:
-            data = {}
-
-        # print the location value (could be None)
-        print(data.get('location'))
+    elif response.status_code == 403:
+        reset_timestamp = int(response.headers["X-Ratelimit-Reset"])
+        current_timestamp = int(time.time())
+        reset_in_minutes = (reset_timestamp - current_timestamp) // 60
+        print("Reset in {} min".format(reset_in_minutes))
+    else:
+        print(response.json()["location"])
 
 
-if __name__ == '__main__':
-    if len(sys.argv) < 2:
-        # nothing to do if no URL supplied
-        sys.exit(1)
+if __name__ == "__main__":
+    import sys
 
-    print_user_location(sys.argv[1])
+    main(sys.argv[1])
+
