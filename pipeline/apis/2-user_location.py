@@ -1,10 +1,20 @@
 #!/usr/bin/env python3
+"""
+Script that prints the location of a specific GitHub user.
+"""
+
 import requests
 import sys
 import time
 
+
 def main(url):
-    response = requests.get(url)
+    """Fetch and print the location of a GitHub user."""
+    try:
+        response = requests.get(url)
+    except requests.RequestException:
+        print("Error: Unable to reach GitHub API")
+        return
 
     if response.status_code == 404:
         print("Not found")
@@ -22,6 +32,7 @@ def main(url):
         print(location if location else "Not found")
     else:
         print("Error: Unexpected response")
+
 
 if __name__ == "__main__":
     if len(sys.argv) < 2:
