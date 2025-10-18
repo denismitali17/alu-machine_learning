@@ -1,41 +1,41 @@
 #!/usr/bin/env python3
 """
-Script that prints the location of a specific GitHub user
+    script that prints the location of a specific user:
 """
 
+
 import requests
-import sys
 import time
+from datetime import datetime
 
 
 def main(url):
+    """
+    - The user is passed as first argument of the script
+    with the full API URL, example: ./2-user_location.py
+    https://api.github.com/users/holbertonschool
+    - If the user doesn’t exist, print Not found
+    - If the status code is 403, print Reset in X min where X
+    is the number of minutes from now and the value of
+    X-Ratelimit-Reset
+    - Your code should not be executed when the file is
+    imported (you should use if __name__ == '__main__':)
+
+    """
     response = requests.get(url)
 
     if response.status_code == 404:
         print("Not found")
     elif response.status_code == 403:
-        reset_time = response.headers.get("X-RateLimit-Reset")
-        if reset_time:
-            reset_timestamp = int(reset_time)
-            current_timestamp = int(time.time())
-            minutes_left = (reset_timestamp - current_timestamp) // 60
-            print(f"Reset in {minutes_left} min")
-        else:
-            print("Reset in unknown time")
-    elif response.status_code == 200:
-        data = response.json()
-        location = data.get("location")
-        # Handle None or missing location
-        if location:
-            print(location)
-        else:
-            print("Not found")
+        reset_timestamp = int(response.headers["X-Ratelimit-Reset"])
+        current_timestamp = int(time.time())
+        reset_in_minutes = (reset_timestamp - current_timestamp) // 60
+        print("Reset in {} min".format(reset_in_minutes))
     else:
-        print("Error: Unexpected response")
+        print(response.json()["location"])
 
 
 if __name__ == "__main__":
-    if len(sys.argv) < 2:
-        print("Usage: ./2-user_location.py <GitHub API user URL>")
-    else:
-        main(sys.argv[1])
+    import sys
+
+    main(sys.argv[1])
