@@ -1,2 +1,2 @@
-// lsit all docs in mongodb
+// find all documents in a collection
 db.school.find()
